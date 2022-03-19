@@ -5,6 +5,7 @@
 # 2. metrics - system/get/metrics
 # 3. mining - ledger/get/info
 
+import os
 import time
 import config
 import requests
@@ -42,15 +43,21 @@ def main():
         ]
     )
 
+    # create folder if it doesnt exist
+    if not exists(config.SAVE_PATH):
+        print("Creating folder...")
+        os.mkdir(config.SAVE_PATH)
+
     # Append the dataframe to the csv file
+    save_location = f"{config.SAVE_PATH}/{config.FILENAME}"
     df.to_csv(
-        config.SAVE_PATH,
+        save_location,
         mode="a",
         index=False,
-        header=False if exists(config.SAVE_PATH) else True,
+        header=False if exists(save_location) else True,
     )
 
-    print(f"Written to {config.SAVE_PATH}")
+    print(f"Written to {save_location}")
 
 
 if __name__ == "__main__":
